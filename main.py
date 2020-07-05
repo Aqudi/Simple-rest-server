@@ -18,7 +18,7 @@ def search(keyword: str = "", display: int = 10, start: int = 1):
         "X-Naver-Client-Id": client_id,
         "X-Naver-Client-Secret": client_secret
     }
-    res = requests.get(url=BASE_URL+keyword, headers=headers)
+    res = requests.get(url=f"{BASE_URL}{keyword}&display={display}&start={start}", headers=headers)
     json = res.json()
 
     return {"result": json}
