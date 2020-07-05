@@ -20,3 +20,9 @@ pip3 install -r requirements.txt
 ``` shell
 uvicorn main:app --reload  
 ```
+
+## 테스트
+아래 페이지에 들어가서 Swagger UI로 API를 테스트해볼 수 있다.
+
+
+http://127.0.0.1:8000/docs
