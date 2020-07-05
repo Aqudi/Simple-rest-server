@@ -7,6 +7,9 @@ git clone https://github.com/Aqudi/Simple-rest-server.git
 cd Simple-rest-server
 ```
 
+## 네이버 검색 API 키 입력
+constants.py 파일을 열고 발급받은 CLIENT_ID와 CLIENT_SECRET 을 적어줍니다.
+
 ## 패키지 설치
 ```shell
 # 윈도우
