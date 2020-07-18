@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        th,
+        td {
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    검색어 : <input id="keyword" value=""><br>
+    표시할 데이터 개수 : <input id="display" value=""><br>
+    표시할 페이지 : <input id="start" value=""><br>
+    <button id="submit">검색하기</button><br>
+
+    <div id="result">
+        <table>
+            <thead>
+                <td>bloggerlink </td>
+                <td>bloggername </td>
+                <td>description </td>
+                <td>link </td>
+                <td>postdate </td>
+                <td>title </td>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // 버튼
+        let searchBtn = document.querySelector("#submit");
+
+        // 버튼을 눌렀을 때 할 작업들
+        searchBtn.addEventListener("click", () => {
+            let keyword = document.querySelector("#keyword");
+            let display = document.querySelector("#display");
+            let start = document.querySelector("#start");
+
+            // 3개의 input에 쓰여진 내용들을 읽어온다.
+            console.log(keyword.value);
+            console.log(display.value);
+            console.log(start.value);
+
+            // 3개의 input에 쓰여진 내용들을 읽어와서 URL을 만든다.
+            // console.log로 출력을 했으니 확인할 수 있습니다
+            let url = makeUrl(keyword.value, display.value, start.value);
+            console.log(url);
+
+            // data 가져와서 HTML에 적어주는 함수
+            getData(url);
+        })
+
+        function makeUrl(keyword, display = 10, start = 1) {
+            if (display == "") {
+                display = 10
+            }
+            if (start == "") {
+                start = 1
+            }
+            return `http://127.0.0.1:8000/search?keyword=${keyword}&display=${display}&start=${start}`
+        }
+
+        async function getData(url) {
+            let result = await fetch(url);
+            let json = await result.json();
+
+            // json 이라는 변수에 저장된 객체를 잘보면
+            // result 안에 items 안에 검색 결과가 자정된 것을 볼 수 있습니다.
+            console.log(json);
+            console.log(json.result.items);
+
+            // items 안에 저장된 내용들을 가지고 HTML 태그들을 만들어 줍시다!
+            let itmes = json.result.items;
+            let tagString = "";
+            for (let item of itmes) {
+                console.log(item);
+                let temp = `<tr>
+                    <td>${item.bloggerlink}</td>
+                    <td>${item.bloggername}</td>
+                    <td>${item.description}</td>
+                    <td>${item.link}</td>
+                    <td>${item.postdate}</td>
+                    <td>${item.title}</td>
+                </tr>`
+                tagString += temp;
+            }
+            console.log(tagString);
+
+            // 만들어진 태그를 tbody에 넣어줍니다.
+            let tbody = document.querySelector("#tbody");
+            tbody.innerHTML = tagString;
+        }
+    </script>
+</body>
+
+</html>
